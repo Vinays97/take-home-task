@@ -24,9 +24,9 @@ This project is a prototype for a recommendation system for Yonder. It consists 
 
 ## Setup
 Clone the repository and install dependencies.
- git clone <repo_url>
- cd yonder-prototype
- pip install -r requirements.txt
+git clone <repo_url>
+cd yonder-prototype
+pip install -r requirements.txt
 
 ## Environment Variables
 In the `.env` file in the root directory and add your OpenAI API key:
@@ -34,6 +34,6 @@ OPENAI_API_KEY="your_openai_api_key"
 
 ## Running the API
 In the terminal enter the following command:
- uvicorn yonder-prototype.api.main:app --reload
+uvicorn yonder-prototype.api.main:app --reload
 
 Open a web browser and navigate to [http://127.0.0.1:8000](http://127.0.0.1:8000) to see the app running.
