@@ -1,6 +1,6 @@
 import json
 import openai
-from .models import User, Experience
+from .models import User, Experience, CardTransaction, PastRedeemedOffer
 from typing import List, Dict
 from dotenv import load_dotenv
 import os
@@ -42,14 +42,30 @@ def load_data():
     with open("yonder-prototype/data/input.json", "r") as f:
         data = json.load(f)
     users = data["members"]
-    experiences = data["experiences"]
+    experiences = [Experience(**exp) for exp in data["experiences"]]
     return users, experiences
+
+# Extract spending habits from card transactions
+
+def extract_spending_habits(transactions: List[CardTransaction]) -> List[str]:
+    categories = [transaction.category for transaction in transactions]
+    return list(set(categories))
+
+# Extract past experiences from past redeemed offers
+
+def extract_past_experiences(past_offers: List[PastRedeemedOffer], experiences: List[Experience]) -> List[str]:
+    past_experience_ids = [offer.experience_id for offer in past_offers]
+    past_experience_titles = [exp.title for exp in experiences if exp.experience_id in past_experience_ids]
+    return past_experience_titles
 
 # Get recommendations
 
 def get_recommendations(user: User, experiences: List[Experience]) -> str:
     """Generates personalized recommendations using GPT-4o."""
     
+    spending_habits = extract_spending_habits(user.card_transactions)
+    past_experiences = extract_past_experiences(user.past_redeemed_offers, experiences)
+
     # Create structured prompt for GPT-4o
     prompt = f"""
     You are an AI recommendation assistant providing experience suggestions.
@@ -57,13 +73,13 @@ def get_recommendations(user: User, experiences: List[Experience]) -> str:
     ## User Profile:
     - Name: {user.name}
     - Location: {user.location}
-    - Spending Categories: {", ".join(user.spending_habits)}
-    - Past Experiences: {", ".join(user.past_experiences) if user.past_experiences else "None"}
+    - Spending Categories: {', '.join(spending_habits)}
+    - Past Experiences: {', '.join(past_experiences) if past_experiences else 'None'}
     
     ## Available Experiences:
     Below is a list of experiences. Recommend the top 3 most suitable options based on the user's location, preferences, and spending habits:
     
-    {chr(10).join([f"- {exp.title} ({exp.category}, {exp.location}): {exp.description} [Price: {exp.price_range}, Rating: {exp.rating}]" for exp in experiences])}
+    {chr(10).join([f"- {exp.title} ({exp.category}, {exp.location}): {exp.short_description} [Price: {exp.price_range}, Rating: {exp.rating}]" for exp in experiences])}
     
     ## Recommendation Criteria:
     1. **Relevance**: Experiences that match the user's persona, past activities, and spending habits.

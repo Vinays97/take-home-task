@@ -33,5 +33,25 @@
         </tr>
         {% endfor %}
     </table>
+
+    <h1>Experiences</h1>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Location</th>
+            <th>Price Range</th>
+            <th>Short Description</th>
+        </tr>
+        {% for experience in experiences %}
+        <tr>
+            <td>{{ experience.title }}</td>
+            <td>{{ experience.category }}</td>
+            <td>{{ experience.location }}</td>
+            <td>{{ experience.price_range }}</td>
+            <td>{{ experience.short_description }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>

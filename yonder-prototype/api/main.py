@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -18,11 +19,14 @@ templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), '.
 @app.on_event("startup")
 async def startup_event():
     global users, experiences
+    shutil.rmtree(os.path.join(os.path.dirname(__file__), '__pycache__'), ignore_errors=True)
     users, experiences = load_data()
 
 @app.get("/")
 async def root(request: Request):
-    return await list_users_html(request)
+    users_list = await list_users()
+    experiences_list = await list_experiences()
+    return templates.TemplateResponse("users.html", {"request": request, "users": users_list, "experiences": experiences_list})
 
 @app.get("/users")
 async def list_users():
@@ -32,6 +36,16 @@ async def list_users():
 async def list_users_html(request: Request):
     users_list = await list_users()
     return templates.TemplateResponse("users.html", {"request": request, "users": users_list})
+
+@app.get("/experiences")
+async def list_experiences():
+    return [{
+        "title": exp["title"],
+        "category": exp["category"],
+        "location": exp["location"],
+        "price_range": exp["price_range"].replace("Â", ""),
+        "short_description": exp["short_description"]
+    } for exp in experiences]
 
 @app.get("/recommendations/{user_id}")
 async def get_recommendations_endpoint(user_id: str):
