@@ -1,101 +1,131 @@
 import json
 import openai
-from .models import User, Experience, CardTransaction, PastRedeemedOffer
+from .models import User, Experience
 from typing import List, Dict
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
-# Preprocess user data
-
-def preprocess_user_data(user_data: Dict):
-    return {
-        "member_id": user_data["member_id"],
-        "name": user_data["name"],
-        "location": user_data["location"],
-        "past_redeemed_offers": user_data["past_redeemed_offers"],
-        "card_transactions": user_data["card_transactions"]
-    }
-
-# Preprocess experience data
-
-def preprocess_experience_data(experiences_data: List[Dict]):
-    return [
-        {
-            "experience_id": exp["experience_id"],
-            "title": exp["title"],
-            "category": exp["category"],
-            "short_description": exp["short_description"],
-            "location": exp["location"],
-            "price_range": exp["price_range"],
-            "rating": exp["rating"]
-        }
-        for exp in experiences_data
-    ]
+client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+#openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Load data
 
 def load_data():
-    with open("yonder-prototype/data/input.json", "r") as f:
+    with open(os.path.join(os.path.dirname(__file__), '../data/input.json'), 'r', encoding='utf-8') as f:
         data = json.load(f)
-    users = data["members"]
-    experiences = [Experience(**exp) for exp in data["experiences"]]
+    users = data['members']
+    experiences = data['experiences']
     return users, experiences
 
-# Extract spending habits from card transactions
+# Get user info
 
-def extract_spending_habits(transactions: List[CardTransaction]) -> List[str]:
-    categories = [transaction.category for transaction in transactions]
-    return list(set(categories))
+def get_user_info(user_id: str) -> Dict:
+    users, experiences = load_data()
+    user_data = next((u for u in users if u["member_id"] == user_id), None)
+    if not user_data:
+        return {}
+    user = User(**user_data)
+    user_info = {
+        "user": user,
+        "experiences": experiences,
+        "redeemed_experiences": [exp for exp in experiences if exp["experience_id"] in [offer.experience_id for offer in user.past_redeemed_offers]]
+    }
+    return user_info
 
-# Extract past experiences from past redeemed offers
+def generate_recommendations(user_data: Dict) -> str:
+    user = user_data['user']
+    redeemed_details = user_data['redeemed_details']
+    not_redeemed_details = user_data['not_redeemed_details']
 
-def extract_past_experiences(past_offers: List[PastRedeemedOffer], experiences: List[Experience]) -> List[str]:
-    past_experience_ids = [offer.experience_id for offer in past_offers]
-    past_experience_titles = [exp.title for exp in experiences if exp.experience_id in past_experience_ids]
-    return past_experience_titles
+    user_profile = f"""## User Profile
+- **Name:** {user.name}
+- **Location:** {user.location}
 
-# Get recommendations
+### Past Experiences (Redeemed Offers)
+"""
+    for exp in redeemed_details:
+        redeemed_offer = next((offer for offer in user.past_redeemed_offers if offer.experience_id == exp['experience_id']), None)
+        if redeemed_offer:
+            user_profile += f"- **{exp['title']} ({exp['category']}, {exp['location']}, {exp['price_range']})** – Attended on {redeemed_offer.redeemed_date}\n"
+        user_profile += f"  *Description:* {exp['long_description']}\n\n"
 
-def get_recommendations(user: User, experiences: List[Experience]) -> str:
-    """Generates personalized recommendations using GPT-4o."""
-    
-    spending_habits = extract_spending_habits(user.card_transactions)
-    past_experiences = extract_past_experiences(user.past_redeemed_offers, experiences)
+    user_profile += "### Spending Habits (Recent Transactions)\n"
+    for txn in user.card_transactions:
+        user_profile += f"- **{txn.category}:** £{txn.amount} spent at **{txn.merchant_name}** ({txn.date})\n"
 
-    # Create structured prompt for GPT-4o
+    experience_list = "### Available Experiences (Not Yet Redeemed)\n"
+    for exp in not_redeemed_details:
+        experience_list += f"""- **{exp['title']}** ({exp['category']}, {exp['location']}, {exp['price_range']})  
+  *Description:* {exp['long_description']}\n\n"""
+        
     prompt = f"""
-    You are an AI recommendation assistant providing experience suggestions.
-    
-    ## User Profile:
-    - Name: {user.name}
-    - Location: {user.location}
-    - Spending Categories: {', '.join(spending_habits)}
-    - Past Experiences: {', '.join(past_experiences) if past_experiences else 'None'}
-    
-    ## Available Experiences:
-    Below is a list of experiences. Recommend the top 3 most suitable options based on the user's location, preferences, and spending habits:
-    
-    {chr(10).join([f"- {exp.title} ({exp.category}, {exp.location}): {exp.short_description} [Price: {exp.price_range}, Rating: {exp.rating}]" for exp in experiences])}
-    
-    ## Recommendation Criteria:
-    1. **Relevance**: Experiences that match the user's persona, past activities, and spending habits.
-    2. **Novelty**: At least one new category they haven't explored before.
-    3. **Diversity**: Suggestions should be from different price ranges and experience types.
-    
-    Provide recommendations in the format:
-    - [Experience Title]: Short reason why this matches the user.
-    """
+You are an AI specializing in personalized experience recommendations. Your task is to analyze a user's past experiences, spending habits, and lifestyle preferences to generate the best new experiences for them.
 
-    response = openai.Completion.create(
-        engine="gpt-4o",
-        prompt=prompt,
-        max_tokens=200,
-        temperature=0.7
+## Step 1: Create an Experience Persona
+Based on the user’s previous redemptions and spending habits, create:
+1. **Experience Persona Name** → A short, catchy label that defines the user’s preferences (e.g., “Cultural Foodie”).
+2. **Persona Description** → A detailed, human-like description summarizing their lifestyle, interests, and spending habits.
+
+{user_profile}
+
+{experience_list}
+
+## Step 2: Recommend New Experiences
+Recommend the top 3 experiences based on relevance, novelty, and diversity.
+
+## Step 3: Ranking Criteria
+1. **Relevance** → Prioritize experiences matching the user’s interests (e.g., food, lifestyle, or cultural events).
+2. **Novelty** → Introduce at least one experience outside their comfort zone.
+3. **Diversity** → Ensure variety in category and price range.
+
+## Step 4: Format the Response
+Return the response in structured format like this:
+```
+**Experience Persona:** [Persona Name]
+**Persona Description:** [Detailed description summarizing interests, habits, and spending behavior]
+
+**Recommended Experiences:**
+- [Experience Title]: Short explanation of why this matches the user.
+```
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": prompt}],
     )
 
-    recommendations = response.choices[0].text.strip()
-    return recommendations
+    return response.choices[0].message.content.strip()
+
+def get_recommendations(user_id: str) -> str:
+    user_info = get_user_info(user_id)
+    if not user_info:
+        return "User not found"
+    user = user_info["user"]
+    redeemed_experiences = user_info["redeemed_experiences"]
+    redeemed_details = [{
+        "experience_id": exp["experience_id"],
+        "title": exp["title"],
+        "category": exp["category"],
+        "location": exp["location"],
+        "price_range": exp["price_range"],
+        "long_description": exp["long_description"]
+    } for exp in redeemed_experiences]
+    not_redeemed_details = [{
+        "experience_id": exp["experience_id"],
+        "title": exp["title"],
+        "category": exp["category"],
+        "location": exp["location"],
+        "price_range": exp["price_range"],
+        "long_description": exp["long_description"]
+    } for exp in user_info["experiences"] if exp not in redeemed_experiences]
+
+    user_data = {
+        "user": user,
+        "redeemed_details": redeemed_details,
+        "not_redeemed_details": not_redeemed_details
+    }
+
+    return generate_recommendations(user_data)
+    #return user_data

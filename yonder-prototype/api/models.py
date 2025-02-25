@@ -30,6 +30,3 @@ class User(BaseModel):
     location: str
     past_redeemed_offers: List[PastRedeemedOffer]
     card_transactions: List[CardTransaction]
-
-class RecommendationRequest(BaseModel):
-    user_id: str
