@@ -60,12 +60,12 @@ async def get_experience(experience_id: str):
     experience["price_range"] = html.escape(experience["price_range"])
     return experience
 
-@app.get("/recommendations/{user_id}")
+@app.get("/recommendations/{user_id}", response_class=HTMLResponse)
 async def get_recommendations_endpoint(request: Request, user_id: str):
     details = get_recommendations(user_id)
     if details == "User not found":
         raise HTTPException(status_code=404, detail="User not found")
-    return details
+    return HTMLResponse(content=details, status_code=200)
 
 @app.get("/health")
 async def health_check():

@@ -8,7 +8,6 @@ import os
 load_dotenv()
 
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-#openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Load data
 
@@ -61,34 +60,51 @@ def generate_recommendations(user_data: Dict) -> str:
   *Description:* {exp['long_description']}\n\n"""
         
     prompt = f"""
-You are an AI specializing in personalized experience recommendations. Your task is to analyze a user's past experiences, spending habits, and lifestyle preferences to generate the best new experiences for them.
+You are an AI designed to recommend personalized experiences based on a user's profile, past experiences, and spending habits.
 
 ## Step 1: Create an Experience Persona
-Based on the user’s previous redemptions and spending habits, create:
-1. **Experience Persona Name** → A short, catchy label that defines the user’s preferences (e.g., “Cultural Foodie”).
-2. **Persona Description** → A detailed, human-like description summarizing their lifestyle, interests, and spending habits.
+Based on the user's previous redemptions and spending habits, create:
+1. **Experience Persona Name**: A catchy label summarizing the user's preferences (e.g., "Adventurous Traveler").
+2. **Persona Description**: A detailed, human-like summary of the user's lifestyle, interests, and spending habits.
 
 {user_profile}
 
 {experience_list}
 
-## Step 2: Recommend New Experiences
-Recommend the top 3 experiences based on relevance, novelty, and diversity.
+## Step 2: Experience Ranking and Recommendations
+Rank each available experience out of 10 using the following criteria:
+- **Relevance (50%)**: How well does this experience align with the user's past activities and interests?
+- **Novelty (30%)**: How exciting or new is this experience for the user?
+- **Diversity (20%)**: How well does this experience expand the user's interests without overwhelming them?
 
-## Step 3: Ranking Criteria
-1. **Relevance** → Prioritize experiences matching the user’s interests (e.g., food, lifestyle, or cultural events).
-2. **Novelty** → Introduce at least one experience outside their comfort zone.
-3. **Diversity** → Ensure variety in category and price range.
+Provide a score for each category and calculate a final score for each experience, sorting the experiences from highest to lowest score. Recommend the top 3 experiences.
 
-## Step 4: Format the Response
-Return the response in structured format like this:
+Additionally, explain how each experience was ranked based on the user's persona and preferences.
+
+## Step 3: Serendipity Pick
+Recommend one **Serendipity Pick**: an experience that the user is unlikely to try based on their past behaviors, but could align well with their persona profile. Explain why this experience fits the user and how it could be a surprising hit. It should introduce something new and unexpected but still offer value or joy that fits with their lifestyle.
+
+## Step 4: Ranking Breakdown
+Provide detailed rankings using the following methodology:
+1. **Relevance** → Prioritize experiences closely related to the user's known interests (e.g., food, travel, culture).
+2. **Novelty** → Include experiences that are new or slightly outside the user's usual activities to encourage discovery.
+3. **Diversity** → Ensure a balance of categories, such as mixing low and high-cost experiences, different locations, and various types of activities.
+
+## Step 5: Format the Response
+Return the recommendations in a clear, structured format:
 ```
-**Experience Persona:** [Persona Name]
-**Persona Description:** [Detailed description summarizing interests, habits, and spending behavior]
+Experience Persona: [Persona Name] 
+Persona Description: [Detailed description summarizing the user's interests, lifestyle, and spending habits]
 
-**Recommended Experiences:**
-- [Experience Title]: Short explanation of why this matches the user.
+Top 3 Recommendations:
+[Experience Title] (Score: X/10): Explanation of why this experience was ranked high, including relevance, novelty, and diversity breakdown.
+[Experience Title] (Score: X/10): Explanation of why this experience fits the user, with scoring breakdown.
+[Experience Title] (Score: X/10): Explanation of why this experience adds diversity to the user's profile, with scoring breakdown.
+
+Serendipity Pick:
+[Experience Title]: Explanation of why this experience is outside the user’s usual preferences but could be a surprising and valuable addition to their life.
 ```
+Ensure that each explanation includes how the ranking was influenced by the user's profile, interests, and lifestyle preferences.
 """
 
     response = client.chat.completions.create(
@@ -96,7 +112,7 @@ Return the response in structured format like this:
         messages=[{"role": "user", "content": prompt}],
     )
 
-    return response.choices[0].message.content.strip()
+    return response.choices[0].message.content.strip().replace("\n", "<br>")
 
 def get_recommendations(user_id: str) -> str:
     user_info = get_user_info(user_id)
