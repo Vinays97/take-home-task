@@ -39,10 +39,10 @@ def preprocess_experience_data(experiences_data: List[Dict]):
 # Load data
 
 def load_data():
-    with open("data/users.json", "r") as f:
-        users = json.load(f)
-    with open("data/experiences.json", "r") as f:
-        experiences = json.load(f)
+    with open("yonder-prototype/data/input.json", "r") as f:
+        data = json.load(f)
+    users = data["members"]
+    experiences = data["experiences"]
     return users, experiences
 
 # Get recommendations
