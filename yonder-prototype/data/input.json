@@ -39,25 +39,144 @@
       ],
       "card_transactions": [
         {
-          "transaction_id": "T003",
-          "date": "2024-12-20",
+          "transaction_id": "T006",
+          "date": "2025-01-21",
           "merchant_name": "Costa Coffee",
           "category": "Dining",
-          "amount": 5.20
+          "amount": 4.75
         },
         {
-          "transaction_id": "T004",
-          "date": "2025-01-07",
+          "transaction_id": "T007",
+          "date": "2025-01-25",
+          "merchant_name": "Etsy",
+          "category": "Retail",
+          "amount": 18.50
+        },
+        {
+          "transaction_id": "T008",
+          "date": "2025-01-30",
+          "merchant_name": "The Ivy",
+          "category": "Dining",
+          "amount": 85.99
+        },
+        {
+          "transaction_id": "T009",
+          "date": "2025-02-02",
+          "merchant_name": "Selfridges",
+          "category": "Retail",
+          "amount": 210.00
+        },
+        {
+          "transaction_id": "T010",
+          "date": "2025-02-05",
+          "merchant_name": "West End Theatre",
+          "category": "Entertainment",
+          "amount": 120.00
+        },
+        {
+          "transaction_id": "T011",
+          "date": "2025-02-07",
+          "merchant_name": "Starbucks",
+          "category": "Dining",
+          "amount": 5.60
+        },
+        {
+          "transaction_id": "T012",
+          "date": "2025-02-10",
           "merchant_name": "Amazon",
           "category": "Retail",
-          "amount": 29.99
+          "amount": 35.75
         },
         {
-          "transaction_id": "T005",
-          "date": "2025-01-14",
+          "transaction_id": "T013",
+          "date": "2025-02-13",
+          "merchant_name": "Cineworld",
+          "category": "Entertainment",
+          "amount": 16.00
+        },
+        {
+          "transaction_id": "T014",
+          "date": "2025-02-15",
+          "merchant_name": "Five Guys",
+          "category": "Dining",
+          "amount": 17.95
+        },
+        {
+          "transaction_id": "T015",
+          "date": "2025-02-18",
+          "merchant_name": "Harrods",
+          "category": "Retail",
+          "amount": 350.00
+        },
+        {
+          "transaction_id": "T016",
+          "date": "2025-02-20",
+          "merchant_name": "Costa Coffee",
+          "category": "Dining",
+          "amount": 5.10
+        },
+        {
+          "transaction_id": "T017",
+          "date": "2025-02-22",
+          "merchant_name": "Steam",
+          "category": "Entertainment",
+          "amount": 19.99
+        },
+        {
+          "transaction_id": "T018",
+          "date": "2025-02-24",
+          "merchant_name": "Waitrose",
+          "category": "Groceries",
+          "amount": 90.20
+        },
+        {
+          "transaction_id": "T019",
+          "date": "2025-02-25",
+          "merchant_name": "Nando's",
+          "category": "Dining",
+          "amount": 32.50
+        },
+        {
+          "transaction_id": "T020",
+          "date": "2025-02-27",
+          "merchant_name": "Apple Store",
+          "category": "Retail",
+          "amount": 1299.00
+        },
+        {
+          "transaction_id": "T021",
+          "date": "2025-02-28",
+          "merchant_name": "Amazon",
+          "category": "Retail",
+          "amount": 49.99
+        },
+        {
+          "transaction_id": "T022",
+          "date": "2025-02-29",
           "merchant_name": "Vue Cinemas",
           "category": "Entertainment",
-          "amount": 15.00
+          "amount": 13.50
+        },
+        {
+          "transaction_id": "T023",
+          "date": "2025-02-29",
+          "merchant_name": "Gordon Ramsay Steakhouse",
+          "category": "Dining",
+          "amount": 165.00
+        },
+        {
+          "transaction_id": "T024",
+          "date": "2025-03-01",
+          "merchant_name": "GameStop",
+          "category": "Entertainment",
+          "amount": 64.99
+        },
+        {
+          "transaction_id": "T025",
+          "date": "2025-03-02",
+          "merchant_name": "Etsy",
+          "category": "Retail",
+          "amount": 27.45
         }
       ]
     }
@@ -132,6 +251,132 @@
       "available_dates": [
         "2025-05-10",
         "2025-06-05"
+      ]
+    },
+    {
+      "experience_id": "E005",
+      "title": "BAO Dining Experience",
+      "category": "Dining & Drinks",
+      "short_description": "Savor authentic Taiwanese steamed buns at BAO.",
+      "long_description": "Indulge in a culinary journey at BAO, where traditional Taiwanese flavors meet modern culinary techniques. Enjoy a variety of steamed buns, each crafted with precision and passion, offering a unique taste of Taiwan in the heart of the city.",
+      "location": "London",
+      "price_range": "££",
+      "rating": 4.7,
+      "images": [
+        "https://example.com/bao_experience_1.jpg",
+        "https://example.com/bao_experience_2.jpg"
+      ],
+      "available_dates": [
+        "2025-03-15",
+        "2025-04-20"
+      ]
+    },
+    {
+      "experience_id": "E006",
+      "title": "Lyle's Tasting Menu",
+      "category": "Dining & Drinks",
+      "short_description": "Experience a seasonal tasting menu at the Michelin-starred Lyle's.",
+      "long_description": "Delight in a seasonal tasting menu at Lyle's, a Michelin-starred restaurant known for its minimalist approach and focus on British ingredients. Each dish is a testament to the rich culinary heritage of the region, offering a memorable dining experience.",
+      "location": "London",
+      "price_range": "£££",
+      "rating": 4.9,
+      "images": [
+        "https://example.com/lyles_experience_1.jpg",
+        "https://example.com/lyles_experience_2.jpg"
+      ],
+      "available_dates": [
+        "2025-04-10",
+        "2025-05-15"
+      ]
+    },
+    {
+      "experience_id": "E007",
+      "title": "Yonder Flights",
+      "category": "Travel",
+      "short_description": "Explore the world by air with Yonder Flights.",
+      "long_description": "Take to the skies and explore global destinations with Yonder Flights. Enjoy the flexibility of booking with any airline at any time, making your travel experiences seamless and rewarding.",
+      "location": "Global",
+      "price_range": "Varies",
+      "rating": 4.8,
+      "images": [
+        "https://example.com/yonder_flights_1.jpg",
+        "https://example.com/yonder_flights_2.jpg"
+      ],
+      "available_dates": [
+        "2025-03-01",
+        "2025-12-31"
+      ]
+    },
+    {
+      "experience_id": "E008",
+      "title": "Woodland Cabin Retreat",
+      "category": "Travel",
+      "short_description": "Unwind in a secluded woodland cabin getaway.",
+      "long_description": "Escape the hustle and bustle of city life with a retreat to a cozy woodland cabin. Surrounded by nature, this experience offers tranquility, fresh air, and the perfect opportunity to reconnect with oneself or loved ones.",
+      "location": "Lake District",
+      "price_range": "£££",
+      "rating": 4.9,
+      "images": [
+        "https://example.com/woodland_cabin_1.jpg",
+        "https://example.com/woodland_cabin_2.jpg"
+      ],
+      "available_dates": [
+        "2025-05-01",
+        "2025-06-30"
+      ]
+    },
+    {
+      "experience_id": "E009",
+      "title": "Virtual Mixology Class",
+      "category": "Online",
+      "short_description": "Learn the art of cocktail making from home.",
+      "long_description": "Join a live virtual mixology class where expert bartenders guide you through crafting classic and contemporary cocktails. Perfect for a fun night in or enhancing your home bartending skills.",
+      "location": "Online",
+      "price_range": "£",
+      "rating": 4.5,
+      "images": [
+        "https://example.com/virtual_mixology_1.jpg",
+        "https://example.com/virtual_mixology_2.jpg"
+      ],
+      "available_dates": [
+        "2025-03-10",
+        "2025-04-14"
+      ]
+    },
+    {
+      "experience_id": "E010",
+      "title": "Outdoor Rock Climbing Adventure",
+      "category": "Fitness & Wellness",
+      "short_description": "Challenge yourself with an outdoor rock climbing session.",
+      "long_description": "Experience the thrill of outdoor rock climbing with professional instructors. Whether you're a beginner or an experienced climber, this adventure offers routes for all levels amidst stunning natural landscapes.",
+      "location": "Peak District",
+      "price_range": "££",
+      "rating": 4.8,
+      "images": [
+        "https://example.com/rock_climbing_1.jpg",
+        "https://example.com/rock_climbing_2.jpg"
+      ],
+      "available_dates": [
+        "2025-04-05",
+        "2025-05-10"
+      ]
+    },
+    {
+      "experience_id": "E011",
+      "title": "Gourmet Chocolate Workshop",
+      "category": "Entertainment",
+      "short_description": "Create your own chocolates in a hands-on workshop.",
+      "long_description": "Dive into the world of chocolate making with this interactive workshop. Learn about the history of chocolate, techniques for crafting truffles and pralines, and take home your delicious creations.",
+      "location": "Birmingham",
+      "price_range": "££",
+      "rating": 4.7,
+      "images": [
+        "https://example.com/chocolate_workshop_1.jpg",
+        "https://example.com/chocolate_workshop_2.jpg"
+      ],
+      "available_dates": [
+        "2025-03-20",
+        "2025-04-25"
       ]
     }
   ]

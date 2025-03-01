@@ -291,7 +291,7 @@ def generate_recommendations(user_data: Dict) -> str:
         ],
         response_format={"type": "text"},
         temperature=0.7,
-        max_completion_tokens=750,
+        max_completion_tokens=1000,
         frequency_penalty=0.5,
         presence_penalty=0.5
     )
