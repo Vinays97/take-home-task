@@ -62,7 +62,12 @@ async def get_experience(experience_id: str):
 
 @app.get("/recommendations/{user_id}", response_class=HTMLResponse)
 async def get_recommendations_endpoint(request: Request, user_id: str):
-    details = get_recommendations(user_id)
+    prompt, _ = get_recommendations(user_id)
+    return templates.TemplateResponse("recommendations.html", {"request": request, "user_id": user_id, "prompt": prompt})
+
+@app.get("/recommendations/{user_id}/data", response_class=HTMLResponse)
+async def get_recommendations_data(user_id: str):
+    _, details = get_recommendations(user_id)
     if details == "User not found":
         raise HTTPException(status_code=404, detail="User not found")
     return HTMLResponse(content=details, status_code=200)

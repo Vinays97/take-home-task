@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommendations</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f5f5f5;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .box {
+            width: 45%;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: white;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .box:hover {
+            transform: translateY(-5px);
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box" id="prompt-box">
+            <h2>Prompt</h2>
+            <p id="prompt-text">Loading...</p>
+        </div>
+        <div class="box" id="recommendations-box">
+            <h2>Recommendations</h2>
+            <p id="recommendations-text">Loading...</p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const userId = "{{ user_id }}";
+            const promptText = "{{ prompt }}";
+            document.getElementById("prompt-text").innerHTML = promptText.replace(/&lt;br&gt;/g, '<br>');
+            fetch(`/recommendations/${userId}/data`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("recommendations-text").innerHTML = data;
+                });
+        });
+    </script>
+</body>
+</html>
