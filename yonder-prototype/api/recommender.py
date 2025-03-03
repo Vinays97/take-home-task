@@ -149,7 +149,7 @@ def generate_recommendations(user_data: Dict) -> str:
     - **Escape Room Challenge** (Entertainment, Bristol, ££)
     *Description:* Test your problem-solving skills and teamwork in an immersive escape room experience.
     - **Cocktail Making Class** (Food & Drink, Bristol, ££)
-    *Description:*Mix, muddle and shake your favorite cocktails.
+    *Description:* Mix, muddle and shake your favorite cocktails.
 
     **Example Output 2:**
 
@@ -235,29 +235,29 @@ def generate_recommendations(user_data: Dict) -> str:
     Persona Description: [Detailed description summarizing the user's interests, lifestyle, and spending habits, max 50 words]
 
     Top 3 Recommendations:
-    1. [Experience Title] (Score: X.X/10)
-    - Relevance: X.X/10
-    - Novelty: X.X/10
-    - Diversity: X.X/10
+    1. [Experience Title] (Score: X/10)
+    - Relevance: X/10
+    - Novelty: X/10
+    - Diversity: X/10
     - Justification: [Explanation of why this experience was ranked high, including relevance, novelty, and diversity breakdown, max 50 words]
 
-    2. [Experience Title] (Score: X.X/10)
-    - Relevance: X.X/10
-    - Novelty: X.X/10
-    - Diversity: X.X/10
+    2. [Experience Title] (Score: X/10)
+    - Relevance: X/10
+    - Novelty: X/10
+    - Diversity: X/10
     - Justification: [Explanation of why this experience fits the user, with scoring breakdown, max 50 words]
 
-    3.[Experience Title] (Score: X.X/10)
-    - Relevance: X.X/10
-    - Novelty: X.X/10
-    - Diversity: X.X/10
+    3.[Experience Title] (Score: X/10)
+    - Relevance: X/10
+    - Novelty: X/10
+    - Diversity: X/10
     - Justification: [Explanation of why this experience adds diversity to the user's profile, with scoring breakdown, max 50 words]
 
     Serendipity Pick:
     [Experience Title]
-    - Relevance: X.X/10
-    - Novelty: X.X/10
-    - Diversity: X.X/10
+    - Relevance: X/10
+    - Novelty: X/10
+    - Diversity: X/10
     - Justification: [Explanation of why this experience is outside the user's usual preferences but could be a surprising and valuable addition to their life, max 50 words]
     ```
 

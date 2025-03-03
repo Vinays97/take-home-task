@@ -9,6 +9,7 @@ This project is a prototype for a recommendation system for Yonder. It consists 
 3. **recommender.py**: This module contains the logic for generating personalised recommendations. It loads user and experience data, processes user information, and interacts with the OpenAI API to generate recommendations.
 4. **input.json**: This file contains sample data for users and experiences, which is used by the recommender system.
 5. **users.html**: This is a Jinja2 template used to render the list of users and experiences in the web interface.
+6. **recommendations.html**: This is a Jinja2 template used to render the recommendations for a specific user in the web interface.
 
 ## API Endpoints
 - `GET /health` – API health check
@@ -17,6 +18,8 @@ This project is a prototype for a recommendation system for Yonder. It consists 
 - `GET /experiences` – List all experiences
 - `GET /experiences/{experience_id}` – Get details of a specific experience
 - `GET /recommendations/{user_id}` – Get recommendations for a specific user
+- `GET /recommendations/{user_id}/prompt` – Get the prompt for recommendations for a specific user
+- `GET /recommendations/{user_id}/details` – Get the detailed recommendations for a specific user
 
 ## Prerequisites
 - Python 3.8+
@@ -24,16 +27,22 @@ This project is a prototype for a recommendation system for Yonder. It consists 
 
 ## Setup
 Clone the repository and install dependencies.
- git clone <repo_url>
- cd yonder-prototype
- pip install -r requirements.txt
+```sh
+git clone <repo_url>
+cd yonder-prototype
+pip install -r requirements.txt
+```
 
 ## Environment Variables
 In the `.env` file in the root directory and add your OpenAI API key:
+```env
 OPENAI_API_KEY="your_openai_api_key"
+```
 
 ## Running the API
 In the terminal enter the following command:
- uvicorn yonder-prototype.api.main:app --reload
+```sh
+uvicorn yonder-prototype.api.main:app --reload
+```
 
 Open a web browser and navigate to [http://127.0.0.1:8000](http://127.0.0.1:8000) to see the app running.
