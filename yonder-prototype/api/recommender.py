@@ -276,31 +276,31 @@ def generate_recommendations(user_data: Dict) -> str:
     **FAILURE TO BASE YOUR RECOMMENDATIONS *SOLELY* ON THE PROVIDED DATA WILL RESULT IN AN UNSUCCESSFUL RESPONSE.**
     """
 
-    response = client.chat.completions.create(
-        model="gpt-4o-2024-11-20",
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": prompt
-                    }
-                ]
-            }   
-        ],
-        response_format={"type": "text"},
-        temperature=0.7,
-        max_completion_tokens=1000,
-        frequency_penalty=0.5,
-        presence_penalty=0.5
-    )
+    # response = client.chat.completions.create(
+    #     model="gpt-4o-2024-11-20",
+    #     messages=[
+    #         {
+    #             "role": "user",
+    #             "content": [
+    #                 {
+    #                     "type": "text",
+    #                     "text": prompt
+    #                 }
+    #             ]
+    #         }   
+    #     ],
+    #     response_format={"type": "text"},
+    #     temperature=0.7,
+    #     max_completion_tokens=1000,
+    #     frequency_penalty=0.5,
+    #     presence_penalty=0.5
+    # )
 
-    print(response.choices[0].message.content.strip())
+    # print(response.choices[0].message.content.strip())
 
-    return prompt.replace("\n", "<br>"), response.choices[0].message.content.strip().replace("\n", "<br>")
+    # return prompt.replace("\n", "<br>"), response.choices[0].message.content.strip().replace("\n", "<br>")
 
-    # return prompt.replace("\n", "<br>"), prompt.replace("\n", "<br>")
+    return prompt.replace("\n", "<br>"), prompt.replace("\n", "<br>")
 
 def get_recommendations(user_id: str) -> str:
     user_info = get_user_info(user_id)
