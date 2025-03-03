@@ -3,6 +3,7 @@
 <head>
     <title>Recommendations</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
             padding: 20px;
@@ -77,12 +78,43 @@
         .fade-container {
             display: flex;
         }
+        .scroll-button {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .box {
+                width: 100%;
+                margin: 10px 0;
+                padding: 15px;
+                border-radius: 15px;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            }
+            .container {
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            .box p {
+                font-size: 14px;
+                line-height: 1.4;
+                word-wrap: break-word;
+            }
+            .box h2 {
+                font-size: 24px;
+                margin-bottom: 15px;
+            }
+            .scroll-button {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="box" id="prompt-box">
             <h2>Prompt</h2>
+            <a href="#recommendations-box" class="scroll-button">Go to Recommendations</a>
             <p id="prompt-text" class="fade-container"></p>
         </div>
         <div class="box" id="recommendations-box">

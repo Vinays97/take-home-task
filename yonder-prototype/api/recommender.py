@@ -296,8 +296,6 @@ def generate_recommendations(user_data: Dict) -> str:
         presence_penalty=0.5
     )
 
-    print(response.choices[0].message.content.strip())
-
     return prompt.replace("\n", "<br>"), response.choices[0].message.content.strip().replace("\n", "<br>")
 
     # return prompt.replace("\n", "<br>"), prompt.replace("\n", "<br>")
