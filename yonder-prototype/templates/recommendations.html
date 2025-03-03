@@ -66,15 +66,8 @@
             border-right: 3px solid black;
             animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
         }
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-        .fade {
-            animation: fadeInOut 2s infinite;
-        }
         @keyframes fadeInOutLetter {
-            0%, 100% { opacity: 0; }
+            0%, 100% { opacity: 0.2; }
             50% { opacity: 1; }
         }
         .fade-letter {
@@ -90,7 +83,7 @@
     <div class="container">
         <div class="box" id="prompt-box">
             <h2>Prompt</h2>
-            <p id="prompt-text">Loading...</p>
+            <p id="prompt-text" class="fade-container"></p>
         </div>
         <div class="box" id="recommendations-box">
             <h2>Recommendations</h2>
@@ -100,7 +93,6 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const userId = "{{ user_id }}";
-            const promptText = "{{ prompt }}";
             const promptElement = document.getElementById("prompt-text");
             const recommendationsElement = document.getElementById("recommendations-text");
 
@@ -129,10 +121,16 @@
                 }
             }
 
-            typeText(promptElement, promptText.replace(/&lt;br&gt;/g, '<br>'));
+            fadeInOutLetters(promptElement, 'Generating...');
             fadeInOutLetters(recommendationsElement, 'Thinking...');
 
-            fetch(`/recommendations/${userId}/data`)
+            fetch(`/recommendations/${userId}/prompt`)
+                .then(response => response.text())
+                .then(data => {
+                    typeText(promptElement, data);
+                });
+
+            fetch(`/recommendations/${userId}/details`)
                 .then(response => response.text())
                 .then(data => {
                     recommendationsElement.classList.remove('fade-container');
